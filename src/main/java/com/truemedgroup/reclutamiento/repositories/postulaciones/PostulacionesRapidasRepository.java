@@ -15,8 +15,8 @@ public interface PostulacionesRapidasRepository extends CrudRepository<PostRapTe
 
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO Postulaciones_Rapidas(nombre_completo, idEmpleo, archivo, myme_type, telefono, bodyResponse) VALUES (?1, ?2, ?3, ?4, ?5, ?6)", nativeQuery = true)
-    public void insertPostulacionRapida(String nombreCompleto, Integer idEmpleo, String archivo, String type, String telefono, String body);
+    @Query(value = "INSERT INTO Postulaciones_Rapidas(nombre_completo, idEmpleo, archivo, myme_type, telefono, bodyResponse, desempeno) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)", nativeQuery = true)
+    public void insertPostulacionRapida(String nombreCompleto, Integer idEmpleo, String archivo, String type, String telefono, String body, String desempeno);
 
     @Query(value = "select TOP 1 id FROM Postulaciones_Rapidas ORDER BY id DESC", nativeQuery = true)
     public Integer getTopPostulacionRapida();

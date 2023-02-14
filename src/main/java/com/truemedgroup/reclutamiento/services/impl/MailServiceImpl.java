@@ -46,7 +46,7 @@ public class MailServiceImpl implements MailService {
 
         SimpleMailMessage email = new SimpleMailMessage();
 
-        email.setFrom("Reclutamiento Truemed <customerservice@truemedgroup.com>");
+        email.setFrom("Reclutamiento Truemed <postulaciones.truemedgroup@outlook.com>");
         email.setTo(to);
         email.setSubject(subject);
         email.setText(content);
@@ -67,7 +67,8 @@ public class MailServiceImpl implements MailService {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-            helper.setFrom(new InternetAddress("customerservice@truemedgroup.com"));
+            helper.setFrom(new InternetAddress("postulaciones.truemedgroup@outlook.com"));
+//            helper.setFrom(new InternetAddress("customerservice@truemedgroup.com"));
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(body, true);

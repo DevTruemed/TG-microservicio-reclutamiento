@@ -230,6 +230,25 @@ public class AdminServiceImpl implements AdminService {
     }
 
     public List<Empleo> empleosActivos() {
+//        Test Empleo Prueba Local
+        /*
+        List<Empleo> list = new ArrayList<>();
+        Optional<Empleo> data = empleosRepository.findById(28040);
+        if (data.isPresent()) {
+            Empleo emp = data.get();
+            emp.setPruebas(new ArrayList<>());
+            emp.setActivo(true);
+            if (emp.getTest() != null) {
+                PostRapTest test = emp.getTest();
+                Collections.shuffle(test.getPreguntas(), new Random());
+                test.setPreguntas(test.getPreguntas().subList(0, 4));
+            }
+            list.add(emp);
+        }
+        return list;
+        */
+
+
         List<Empleo> data = empleosRepository.findByActivoTrue();
         for (Empleo empleo: data) {
             empleo.setPruebas(new ArrayList<>());
@@ -256,13 +275,27 @@ public class AdminServiceImpl implements AdminService {
         Integer consecutivo = postulacionesRapidasRepository.getTopPostulacionRapida() + 1;
         Integer cantidadPostulaciones = postulacionesRapidasRepository.getTotalPostulaciones(telefono, empleo.getId());
 
+
+        String desempeno = "";
+        if (bodyPreguntas.contains(">DESTACADO<")) {
+            desempeno = "DESTACADO";
+        }
+        if (bodyPreguntas.contains(">BUENO<")) {
+            desempeno = "BUENO";
+        }
+        if (bodyPreguntas.contains(">REGULAR<")) {
+            desempeno = "REGULAR";
+        }
+        if (bodyPreguntas.contains(">MALO<")) {
+            desempeno = "MALO";
+        }
         String correo = empleo.getCorreoNotificacion();
-        String subject = "NUEVA POSTULACION PARA " + empleo.getPuesto();
+        String subject = "NUEVA POSTULACION PARA " + empleo.getPuesto() + " - " + desempeno;
         String body = "<html><body>" + "<p># Postulacion: \"" + consecutivo.toString() + "\"</p><p>Vacante: \"" + empleo.getPuesto() +
                 "\"</p><p>Aspirante: \"" + nombreCompleto + "\"</p><p>Número telefónico: \"" + telefono + "\".</p>" +
                 (cantidadPostulaciones >= 2 ? "<p>Este número se ha postulado " + cantidadPostulaciones + " veces a esta vacante.</p>" : "")
                 + "<br />" + bodyPreguntas + "</html></body>";
-        postulacionesRapidasRepository.insertPostulacionRapida(nombreCompleto, idEmpleo, archivo, type, telefono, body);
+        postulacionesRapidasRepository.insertPostulacionRapida(nombreCompleto, idEmpleo, archivo, type, telefono, body, desempeno);
 
         String nombreArchivo = "cv_" + nombreCompleto.replaceAll(" ", "_") + ".pdf";
 
